@@ -1,9 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+}
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
 }
 
 android {
@@ -18,6 +27,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AdMob IDs from local.properties
+        val admobAppId = localProperties.getProperty("ADMOB_APP_ID", "")
+        val admobBannerId = localProperties.getProperty("ADMOB_BANNER_AD_UNIT_ID", "")
+        val admobInterstitialId = localProperties.getProperty("ADMOB_INTERSTITIAL_AD_UNIT_ID", "")
+
+        buildConfigField("String", "ADMOB_BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
+
+        manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
     }
 
     buildTypes {
@@ -38,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -96,6 +116,9 @@ dependencies {
 
     // Coroutines
     implementation(libs.coroutines.android)
+
+    // Google Ads
+    implementation(libs.play.services.ads)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
