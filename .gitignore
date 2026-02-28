@@ -1,0 +1,27 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+*.hprof
+/.kotlin/
+
+# Module build directories
+/app/build/
+/app/schemas/
+/common/build/
+/domain/build/
+/database/build/
+/data/build/
+/ui/build/
+/ml/build/
+/photos/build/
+/albums/build/
+/favorites/build/
+/people/build/
+/detail/build/
